@@ -17,7 +17,10 @@ public class RegUtil {
      * 邮箱正则
      */
     public static final String REG_EMAIL = "\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
-    
+    /**
+     * 数字字母混合6-16，一般用于密码设置
+     */
+    public static final String REG_MIXPASS = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
     /**
      * 验证Email
      * @param email email地址，格式：zhangsan@sina.com，zhangsan@xxx.com.cn，xxx代表邮件服务商
