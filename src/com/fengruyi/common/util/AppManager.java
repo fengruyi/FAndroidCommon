@@ -81,12 +81,11 @@ public class AppManager {
 	/**
 	 * 退出应用程序
 	 */
-	@SuppressWarnings("deprecation")
 	public void AppExit(Context context) {
 		try {
 			finishAllActivity();
 			ActivityManager activityMgr= (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-			activityMgr.restartPackage(context.getPackageName());
+			activityMgr.killBackgroundProcesses(context.getPackageName());
 			System.exit(0);
 		} catch (Exception e) {	}
 	}
