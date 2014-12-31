@@ -5,6 +5,8 @@ import java.io.File;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 
 import com.fengruyi.common.log.Logger;
 import com.fengruyi.common.util.AppUtil;
@@ -21,7 +23,9 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 public class BaseApplication extends Application{
 	
 	private static BaseApplication instance;
-	
+	public static float sHeightPixels = -1f;//屏幕的高，像素值
+	public static float sWidthPixels = -1f;//屏幕的宽，像素值
+	public static float sDensity = 1f;//屏幕密度
 	public static BaseApplication getInstance(){
 		return instance;
 	}
@@ -34,10 +38,22 @@ public class BaseApplication extends Application{
 		super.onCreate();
 		//initAppFileRoot();
 		
+		readParams();
 		initImageLoader();
 		initPrefs();
+		
 	}
-	
+	/**
+	 * 获取屏幕参数
+	 */
+	protected void readParams(){
+		DisplayMetrics displayMetrics = new DisplayMetrics();
+		WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+		windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+		sWidthPixels = displayMetrics.widthPixels;
+		sHeightPixels = displayMetrics.heightPixels;
+		sDensity = displayMetrics.density;
+	}
 	/**
 	 * 图片缓存初始化,图片缓存大小 目录等设置
 	 */
