@@ -15,13 +15,13 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
 /**
- * wifi���Ӱ�����
+ * wifi链接帮助类
  * @author fengruyi
  *
  */
 public class WifiConnector {
 	/*
-	 * manifest����Ҫ��Ȩ��
+	 * manifest中需要的权限
 	 * 
 	 * <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
 	   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
@@ -29,7 +29,7 @@ public class WifiConnector {
 	 * 
 	 * */
 	
-	private static final int WIFI_CONNECT_TIMEOUT = 20;//����wifi��ʱʱ��
+	private static final int WIFI_CONNECT_TIMEOUT = 20;//连接wifi超时时间
 	
 	private Context mContext;
 	private WifiManager mWifiManager;
@@ -40,17 +40,17 @@ public class WifiConnector {
 	private boolean mIsConnected = false;
 	private int mNetworkID = -1;
 	
-	//�������ģʽ
+	//网络加密模式
 	public enum SecurityMode{
 		OPEN,WEP,WPA,WPA2
 	}
-	//���ӽ�������
+	//连接结果监听器
 	public interface WifiConnectListener{
 		
 		public void onWifiConnectCompleted(boolean isConnect);
 	}
 	/**
-	 * ���췽��
+	 * 构造方法
 	 * @param context
 	 * @param listener
 	 */
@@ -65,47 +65,47 @@ public class WifiConnector {
 	}
 	
 	/**
-	 * ����ָ��wifi
-	 * @param ssid wifi���
-	 * @param pass wifi����
-	 * @param mode ����ģʽ
+	 * 连接指定wifi
+	 * @param ssid wifi名称
+	 * @param pass wifi密码
+	 * @param mode 加密模式
 	 */
 	public void connect(final String ssid,final String pass,final SecurityMode mode){
-		//WIFI��������һ����ʱ�Ĺ�̣�������Ҫ�ŵ��߳���ִ��
+		//WIFI的连接是一个耗时的过程，所以需要放到线程中执行
 		new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
-				//���WIFIû�д򿪣����WIFI
+				//如果WIFI没有打开，则打开WIFI
 				if( !mWifiManager.isWifiEnabled() ) {
 					mWifiManager.setWifiEnabled(true);
 				}
-				//ע�����ӽ��������
+				//注册连接结果监听对象
 				mContext.registerReceiver(mWiFiConnecctReceiver, new IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION));
-				//����ָ��SSID
+				//连接指定SSID
 				if(!onConnect(ssid, pass, mode)){
 					mWifiConnectListener.onWifiConnectCompleted(false);
 				}else{
 					mWifiConnectListener.onWifiConnectCompleted(true);
 				}
-				//ɾ��ע��ļ��������
+				//删除注册的监听类对象
 				mContext.unregisterReceiver(mWiFiConnecctReceiver);
 			}
 		}).start();
 	}
 	/**
-	 * ��������wifi����
+	 * 具体连接wifi代码
 	 * @param ssid
 	 * @param pass
 	 * @param mode
 	 * @return
 	 */
 	protected boolean onConnect(String ssid,String pass,SecurityMode mode){
-		//����µ��������ö���
+		//添加新的网络配置对象
 		WifiConfiguration wcfg = new WifiConfiguration();
 		wcfg.SSID = "\"" + ssid +"\"";
-		if(pass!=null&&!"".equals(pass)){//���벻Ϊ��
-			//����ȽϹؼ������WEP���ܷ�ʽ�����磬������Ҫ�ŵ�cfg.wepKeys[0]����
+		if(pass!=null&&!"".equals(pass)){//密码不为空
+			//这里比较关键，如果是WEP加密方式的网络，密码需要放到cfg.wepKeys[0]里面
 			if(mode == SecurityMode.WEP){
 				wcfg.wepKeys[0] = "\"" +pass+"\"";
 				wcfg.wepTxKeyIndex = 0;
@@ -114,7 +114,7 @@ public class WifiConnector {
 			}
 		}
 		wcfg.status = WifiConfiguration.Status.ENABLED;
-		//�����������
+		//添加网络配置
 		mNetworkID = mWifiManager.addNetwork(wcfg);
 		
 		mLock.lock();
@@ -125,7 +125,7 @@ public class WifiConnector {
 			return false;
 		}
 		try {
-			//�ȴ����ӽ��
+			//等待连接结果
 			mCondition.await(WIFI_CONNECT_TIMEOUT,TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -135,12 +135,12 @@ public class WifiConnector {
 		mLock.unlock();
 		return mIsConnected;
 	}
-	//����ϵͳwifi������Ϣ�㲥
+	//监听系统wifi连接消息广播
 	protected class WiFiConnecctReceiver extends BroadcastReceiver{
 
 		@Override
 		public void onReceive(Context context, Intent intent) {	
-			if(!WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(intent.getAction())){//�����wifi�Ĺ㲥�������κδ���
+			if(!WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(intent.getAction())){//如果不是wifi的广播，则不做任何处理
 				return;
 			}
 			
