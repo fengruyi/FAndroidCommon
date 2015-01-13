@@ -35,7 +35,8 @@ public abstract class MyBaseAdapter extends BaseAdapter{
 	         * @param <T>
 	         * @return
 	         */
-	        <T extends View> T obtainView(View convertView, int resId){
+	        @SuppressWarnings("unchecked")
+			public <T extends View> T obtainView(View convertView, int resId){
 	            View v = views.get(resId);
 	            if(null == v){
 	                v = convertView.findViewById(resId);
