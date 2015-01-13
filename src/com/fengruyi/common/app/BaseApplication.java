@@ -37,7 +37,7 @@ public class BaseApplication extends Application{
 	public void onCreate() {
 		super.onCreate();
 		//initAppFileRoot();
-		
+		instance = this;
 		readParams();
 		initImageLoader();
 		initPrefs();
@@ -86,6 +86,6 @@ public class BaseApplication extends Application{
      * 初始化SharedPreference
      */
 	protected void initPrefs(){
-		PrefsUtil.init(getApplicationContext(), getPackageName()+"_preference", Context.MODE_MULTI_PROCESS);
+		PrefsUtil.init(getInstance(), getPackageName()+"_preference", Context.MODE_MULTI_PROCESS);
 	}
 }

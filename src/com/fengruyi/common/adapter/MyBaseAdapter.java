@@ -25,7 +25,7 @@ public abstract class MyBaseAdapter extends BaseAdapter{
 	    /**
 	     * 各个控件的缓存
 	     */
-	    class ViewHolder{
+	    public class ViewHolder{
 	        public SparseArray<View> views = new SparseArray<View>();
 
 	        /**
