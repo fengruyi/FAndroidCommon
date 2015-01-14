@@ -114,7 +114,26 @@ public class AppUtil {
         }
         return false ;
     }
-
+    /**
+     * 指定wifi 是否连接 
+     * @param context
+     * @return
+     */
+    public static boolean isWifiConnected(Context context,String ssid)
+    {
+        ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifiNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        WifiManager wifiManager =   (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        if(wifiNetworkInfo!=null&&wifiNetworkInfo.isConnected())
+        {
+        	WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        	if(wifiInfo!=null&&wifiInfo.getSSID().equals("\"" + ssid + "\"")){
+        		return true ;
+        	}
+            
+        }
+        return false ;
+    }
     /**
      * 安装apk
      * @param context
