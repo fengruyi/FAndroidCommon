@@ -1,5 +1,7 @@
 package com.fengruyi.common.adapter;
 
+import java.util.List;
+
 import android.content.Context;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -8,20 +10,34 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 /**
- * 
+ * listview adapter快速适配
  * @author fengruyi
+ * @param <T> list集合对象泛型
  *
  */
-public abstract class MyBaseAdapter extends BaseAdapter{
-	  Context context;
-
-	    protected MyBaseAdapter(Context context) {
+public abstract class MyBaseAdapter<T> extends BaseAdapter{
+	    Context context;
+	    List<T> mlist;
+	    protected MyBaseAdapter(Context context,List<T> list) {
 	        this.context = context;
+	        mlist = list;
 	    }
-
+	    
 	    protected MyBaseAdapter() {
 	    }
-
+	    
+	    @Override
+	    public int getCount() {
+	    	return mlist==null?0:mlist.size();
+	    }
+	    @Override
+	    public long getItemId(int position) {
+	    	return position;
+	    }
+	    @Override
+	    public Object getItem(int position) {
+	    	return mlist.get(position);
+	    }
 	    /**
 	     * 各个控件的缓存
 	     */
@@ -35,7 +51,7 @@ public abstract class MyBaseAdapter extends BaseAdapter{
 	         * @param <T>
 	         * @return
 	         */
-	        @SuppressWarnings("unchecked")
+	        @SuppressWarnings({ "unchecked", "hiding" })
 			public <T extends View> T obtainView(View convertView, int resId){
 	            View v = views.get(resId);
 	            if(null == v){
@@ -53,7 +69,8 @@ public abstract class MyBaseAdapter extends BaseAdapter{
 	     */
 	    public abstract int itemLayoutRes();
 
-	    @Override
+	    @SuppressWarnings("unchecked")
+		@Override
 	    public View getView(int position, View convertView, ViewGroup parent) {
 	        ViewHolder holder;
 	        if(null == convertView){
