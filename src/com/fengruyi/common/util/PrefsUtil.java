@@ -8,6 +8,8 @@ import android.os.Build;
 import java.util.Map;
 import java.util.Set;
 
+import com.alibaba.fastjson.JSON;
+
 /**
  * android preference util
  * @author fengruyi
@@ -113,6 +115,32 @@ public class PrefsUtil {
 //        editor.commit();
         return this;
     }
+    
+    public PrefsUtil putObject(String key, Object object){
+    	if(object == null){
+			throw new IllegalArgumentException("object is null");
+		}
+		
+		if(key.equals("") || key == null){
+			throw new IllegalArgumentException("key is empty or null");
+		}
+		editor.putString(key, JSON.toJSONString(object));
+//        editor.commit();
+        return this;
+    }
+    public <T> T getObject(String key, Class<T> a) {
+    	
+		String json = prefs.getString(key, null);
+		if (json == null) {
+			return null;
+		} else {
+			try{
+				return JSON.parseObject(json, a);
+			} catch (Exception e) {
+				throw new IllegalArgumentException("Object storaged with key " + key + " is instanceof other class");				
+			}
+		}
+	}
     public void commit(){
         editor.commit();
     }
