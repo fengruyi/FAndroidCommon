@@ -13,6 +13,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -69,7 +70,7 @@ public class InputCountter extends RelativeLayout implements OnClickListener{
 		mEdit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(mMaxinputCount)});
 		mEdit.setHint(array.getString(R.styleable.InputCountter_edit_hint));
 		mTextview.setTextColor(mLableTextColor);
-		mTextview.setTextSize(mLableTextSize);
+		mTextview.setTextSize(TypedValue.COMPLEX_UNIT_PX,mLableTextSize);
 		mEdit.setId(1);
 		mDelete.setId(2);
 		RelativeLayout.LayoutParams edit_params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);

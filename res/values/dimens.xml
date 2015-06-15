@@ -1,7 +1,17 @@
 <resources>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="txt_smaller">11sp</dimen>
+    <dimen name="txt_small">12sp</dimen>
+    <dimen name="txt_middle">14sp</dimen>
+    <dimen name="txt_nomal">16sp</dimen>
+    <dimen name="txt_big">18sp</dimen>
+    <dimen name="txt_bigger">20sp</dimen>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-
+    <drawable name="tab_press_drawable">#f3f3f3</drawable>
+    <drawable name="tab_unpress_drawable">#ffffff</drawable>
+    <dimen name="diliver_line_height">2px</dimen>
+	<dimen name="tab_diliver_height">4px</dimen>
+    <dimen name="tab_title_padding">12dp</dimen>
 </resources>

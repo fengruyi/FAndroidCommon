@@ -71,5 +71,10 @@
         <!--背景是否模糊-->
     </style>
 
-
+	 <!-- tab样式 -->
+    <style name="tab_title_style">
+        <item name="android:textColor">@color/tab_text_color</item>
+        <item name="android:background">@drawable/btn_tab</item>
+        <item name="android:textSize">@dimen/txt_nomal</item>
+    </style>
 </resources>
