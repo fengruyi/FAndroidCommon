@@ -10,6 +10,7 @@ import android.view.ViewGroup;
  * @author fengruyi
  *
  */
+@SuppressWarnings("unchecked")
 public abstract class LazyFragment extends Fragment {
 	 protected boolean isLazyLoadCompleted; //fragment可见后是否已经执行过懒加载 
 	 protected boolean isVisible;//fragment是否可见
@@ -46,7 +47,8 @@ public abstract class LazyFragment extends Fragment {
          return (T)v;
 	 }
 		
-	 public <T extends View> T obtainView(int resId){
+
+	public <T extends View> T obtainView(int resId){
          View v = mContentView.findViewById(resId);          
          return (T)v;
 	 }
