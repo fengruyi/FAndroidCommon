@@ -6,8 +6,9 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.WindowManager;
-
+import android.widget.Toast;
 import com.fengruyi.common.log.Logger;
 import com.fengruyi.common.util.AppUtil;
 import com.fengruyi.common.util.FileUtil;
@@ -26,6 +27,8 @@ public class BaseApplication extends Application{
 	public static float sHeightPixels = -1f;//屏幕的高，像素值
 	public static float sWidthPixels = -1f;//屏幕的宽，像素值
 	public static float sDensity = 1f;//屏幕密度
+	private static String lastToast = "";
+	private static long lastToastTime;
 	public static BaseApplication getInstance(){
 		return instance;
 	}
@@ -87,5 +90,25 @@ public class BaseApplication extends Application{
      */
 	protected void initPrefs(){
 		PrefsUtil.init(getInstance(), getPackageName()+"_preference", Context.MODE_MULTI_PROCESS);
+	}
+	
+	public static void showToast(String message, int duration, int icon,
+            int gravity) {
+	if (message != null && !message.equalsIgnoreCase("")) {
+		long time = System.currentTimeMillis();
+			if (!message.equalsIgnoreCase(lastToast)
+			|| Math.abs(time - lastToastTime) > 2000) {
+				Toast toast = new Toast(getInstance());
+				if (gravity == Gravity.CENTER) {
+					toast.setGravity(gravity, 0, 0);
+				} else {
+					toast.setGravity(gravity, 0, 35);
+				}
+				toast.setDuration(duration);
+				toast.show();
+				lastToast = message;
+				lastToastTime = System.currentTimeMillis();
+			}
+		}
 	}
 }

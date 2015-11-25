@@ -10,14 +10,6 @@ import android.view.ViewGroup;
 
 public abstract class BaseFragment extends Fragment{
 
-		public Handler handler = new Handler(){
-
-			@Override
-			public void handleMessage(Message msg) {
-				handleInfoMessage(msg);
-			}
-		};
-
 		public abstract void handleInfoMessage(Message msg);
 
 

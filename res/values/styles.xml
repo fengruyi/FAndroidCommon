@@ -1,6 +1,10 @@
 <resources>
     
     <!-- activity 进入和退出效果 -->
+    <!-- 当我们从 A1 启动 A2 时，A1 从屏幕上消失，这个动画叫做 android:activityOpenExitAnimation
+		   当我们从 A1 启动 A2 时，A2 出现在屏幕上，这个动画叫做 android:activityOpenEnterAnimation
+		   当我们从 A2 退出回到 A1 时，A2 从屏幕上消失，这个叫做 android:activityCloseExitAnimation
+		   当我们从 A2 退出回到 A1 时，A1 出现在屏幕上，这个叫做 android:activityCloseEnterAnimation -->
     <style name="AnimationActivity" parent="@android:style/Animation.Activity">  
         <!-- 新的activity创建进入效果 -->
 	    <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>

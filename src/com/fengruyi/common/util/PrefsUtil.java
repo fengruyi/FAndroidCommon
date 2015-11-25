@@ -4,12 +4,8 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
-
 import java.util.Map;
 import java.util.Set;
-
-import com.alibaba.fastjson.JSON;
-
 /**
  * android preference util
  * @author fengruyi
@@ -18,7 +14,6 @@ import com.alibaba.fastjson.JSON;
 public class PrefsUtil {
 	
     private static PrefsUtil prefsUtil;
-    public Context context;
     public SharedPreferences prefs;
     public SharedPreferences.Editor editor;
 
@@ -28,8 +23,7 @@ public class PrefsUtil {
 
     public static void init(Context context, String prefsname, int mode) {
         prefsUtil = new PrefsUtil();
-        prefsUtil.context = context;
-        prefsUtil.prefs = prefsUtil.context.getSharedPreferences(prefsname, mode);
+        prefsUtil.prefs = context.getSharedPreferences(prefsname, mode);
         prefsUtil.editor = prefsUtil.prefs.edit();
     }
 
@@ -86,65 +80,30 @@ public class PrefsUtil {
         return this.prefs.getAll();
     }
 
-    public PrefsUtil putString(String key, String value){
+    public void putString(String key, String value){
         editor.putString(key, value);
-//        editor.commit();
-        return this;
-    }
-
-    public PrefsUtil putInt(String key, int value){
-        editor.putInt(key, value);
-//        editor.commit();
-        return this;
-    }
-
-    public PrefsUtil putFloat(String key, float value){
-        editor.putFloat(key, value);
-//        editor.commit();
-        return this;
-    }
-
-    public PrefsUtil putLong(String key, long value){
-        editor.putLong(key, value);
-//        editor.commit();
-        return this;
-    }
-
-    public PrefsUtil putBoolean(String key, boolean value){
-        editor.putBoolean(key, value);
-//        editor.commit();
-        return this;
-    }
-    
-    public PrefsUtil putObject(String key, Object object){
-    	if(object == null){
-			throw new IllegalArgumentException("object is null");
-		}
-		
-		if(key.equals("") || key == null){
-			throw new IllegalArgumentException("key is empty or null");
-		}
-		editor.putString(key, JSON.toJSONString(object));
-//        editor.commit();
-        return this;
-    }
-    public <T> T getObject(String key, Class<T> a) {
-    	
-		String json = prefs.getString(key, null);
-		if (json == null) {
-			return null;
-		} else {
-			try{
-				return JSON.parseObject(json, a);
-			} catch (Exception e) {
-				throw new IllegalArgumentException("Object storaged with key " + key + " is instanceof other class");				
-			}
-		}
-	}
-    public void commit(){
         editor.commit();
     }
 
+    public void putInt(String key, int value){
+        editor.putInt(key, value);
+        editor.commit();
+    }
+
+    public void putFloat(String key, float value){
+        editor.putFloat(key, value);
+        editor.commit();
+    }
+
+    public void putLong(String key, long value){
+        editor.putLong(key, value);
+        editor.commit();
+    }
+
+    public void putBoolean(String key, boolean value){
+        editor.putBoolean(key, value);
+        editor.commit();
+    }
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public PrefsUtil putStringSet(String key, Set<String> value){
         editor.putStringSet(key, value);
